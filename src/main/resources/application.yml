@@ -1,0 +1,43 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: rwa-authentication-service
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    show-sql: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/rwa_db
+    username: root
+    password: postgres
+    hikari:
+      connection-test-query: SELECT 1
+      jdbc-url: jdbc:postgresql://localhost:5432/rwa_db
+      maximum-pool-size: 5
+      minimum-idle: 1
+      pool-name: rwa-pool
+      username: root
+      password: postgres
+      connection-timeout: 30000
+      idle-timeout: 60000
+      max-lifetime: 240000
+  flyway:
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+
+jwt:
+  secret: rwasecret
+  get:
+    token:
+      uri: /authenticate

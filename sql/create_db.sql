@@ -1,0 +1,3 @@
+CREATE DATABASE rwa_db OWNER root;
+  
+GRANT ALL PRIVILEGES ON DATABASE rwa_db TO root;
