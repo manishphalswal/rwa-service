@@ -1,4 +1,4 @@
-package com.rwa.common.domain;
+package com.rwa.referencedata.domain;
 
 import lombok.*;
 

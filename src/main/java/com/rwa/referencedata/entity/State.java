@@ -1,4 +1,4 @@
-package com.rwa.common.entity;
+package com.rwa.referencedata.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

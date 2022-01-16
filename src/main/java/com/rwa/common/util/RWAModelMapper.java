@@ -1,5 +1,9 @@
 package com.rwa.common.util;
 
+import com.rwa.referencedata.domain.StateDto;
+import com.rwa.referencedata.domain.VillageDto;
+import com.rwa.referencedata.entity.State;
+import com.rwa.referencedata.entity.Village;
 import com.rwa.user.domain.UserDto;
 import com.rwa.user.entity.User;
 import org.modelmapper.ModelMapper;
@@ -38,6 +42,14 @@ public class RWAModelMapper {
     public UserDto mapUserEntityToBean(final User user, final UserDto userDto) {
         modelMapper.map(user, userDto);
         return userDto;
+    }
+
+    public VillageDto mapVillageEntityToBean(final Village village) {
+        return modelMapper.map(village, VillageDto.class);
+    }
+
+    public StateDto mapStateEntityToBean(final State state) {
+        return modelMapper.map(state, StateDto.class);
     }
 
 }

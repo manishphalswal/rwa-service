@@ -1,6 +1,7 @@
 package com.rwa.common.advice;
 
 import com.rwa.exception.InvalidRequestException;
+import com.rwa.referencedata.exception.ResourceNotFoundException;
 import com.rwa.user.exception.IdUsernameMismatchException;
 import com.rwa.user.exception.UserNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -37,6 +38,13 @@ public class ApplicationExceptionHandler {
             reason="Invalid request payload")
     @ExceptionHandler(InvalidRequestException.class)
     public void handleException(InvalidRequestException ex) {
+
+    }
+
+    @ResponseStatus(value= HttpStatus.NOT_FOUND,
+            reason="Resource not found")
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public void handleException(ResourceNotFoundException ex) {
 
     }
 }

@@ -1,7 +1,7 @@
 package com.rwa.user.entity;
 
-import com.rwa.common.entity.State;
-import com.rwa.common.entity.Village;
+import com.rwa.referencedata.entity.State;
+import com.rwa.referencedata.entity.Village;
 import lombok.*;
 
 import javax.persistence.*;
