@@ -1,6 +1,9 @@
 package com.rwa.user.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,6 +26,7 @@ public class User implements Serializable {
 
     @Column(name="username", updatable = false, nullable = false)
     private String username;
+    private String userPassword;
 
     private String firstName;
     private String lastName;
@@ -38,6 +42,7 @@ public class User implements Serializable {
 
     private String mobileNo;
     private String emailId;
+    private String role;
 
     @Column(name="created_date", insertable = false, updatable = false)
     private Timestamp createdDate;

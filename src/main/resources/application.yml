@@ -1,4 +1,6 @@
 server:
+  servlet:
+    context-path: /rwa
   port: 8081
   error:
     include-message: always
@@ -39,7 +41,4 @@ spring:
 
 
 jwt:
-  secret: rwasecret
-  get:
-    token:
-      uri: /authenticate
+  secret: jwt_rwa_secret

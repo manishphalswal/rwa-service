@@ -1,4 +1,4 @@
 package com.rwa.finance.domain;
 
-public class FinanceDto {
+public class FinanceDTO {
 }

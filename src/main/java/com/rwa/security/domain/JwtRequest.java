@@ -1,4 +1,4 @@
-package com.rwa.user.domain;
+package com.rwa.security.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

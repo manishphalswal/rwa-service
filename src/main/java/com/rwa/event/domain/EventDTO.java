@@ -1,4 +1,4 @@
 package com.rwa.event.domain;
 
-public class EventDto {
+public class EventDTO {
 }

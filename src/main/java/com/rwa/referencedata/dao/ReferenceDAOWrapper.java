@@ -1,8 +1,8 @@
 package com.rwa.referencedata.dao;
 
 import com.rwa.common.util.RWAModelMapper;
-import com.rwa.referencedata.domain.StateDto;
-import com.rwa.referencedata.domain.VillageDto;
+import com.rwa.referencedata.domain.StateDTO;
+import com.rwa.referencedata.domain.VillageDTO;
 import com.rwa.referencedata.exception.ResourceNotFoundException;
 import com.rwa.referencedata.repository.IStateRepository;
 import com.rwa.referencedata.repository.IVillageRepository;
@@ -22,32 +22,32 @@ public class ReferenceDAOWrapper {
 
     private final IStateRepository stateRepository;
 
-    public List<VillageDto> getVillages() {
+    public List<VillageDTO> getVillages() {
         return villageRepository.findAll()
                 .parallelStream()
                 .map(rwaModelMapper::mapVillageEntityToBean)
                 .collect(Collectors.toList());
     }
 
-    public List<VillageDto> getVillagesByState(final Long stateId) {
+    public List<VillageDTO> getVillagesByState(final Long stateId) {
         return villageRepository.findAllByStateId(stateId)
                 .stream().map(rwaModelMapper::mapVillageEntityToBean)
                 .collect(Collectors.toList());
     }
 
-    public VillageDto getVillageById(final Long id) {
+    public VillageDTO getVillageById(final Long id) {
         return rwaModelMapper.mapVillageEntityToBean(villageRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
     }
 
 
-    public List<StateDto> getStates() {
+    public List<StateDTO> getStates() {
         return stateRepository.findAll()
                 .parallelStream()
                 .map(rwaModelMapper::mapStateEntityToBean)
                 .collect(Collectors.toList());
     }
 
-    public StateDto getStateById(final Long id) {
+    public StateDTO getStateById(final Long id) {
         return rwaModelMapper.mapStateEntityToBean(stateRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
     }
 }

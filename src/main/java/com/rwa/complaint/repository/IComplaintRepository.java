@@ -1,6 +1,5 @@
 package com.rwa.complaint.repository;
 
-//@Repository
-public interface IComplaintRepository //extends JpaRepository<Complaint, String>
+public interface IComplaintRepository //extends JpaRepository<Complaint, Long>
 {
 }

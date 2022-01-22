@@ -1,7 +1,8 @@
 package com.rwa.user.service;
 
+import com.rwa.common.domain.Role;
 import com.rwa.user.dao.UserDAOWrapper;
-import com.rwa.user.domain.UserDto;
+import com.rwa.user.domain.UserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,28 +15,35 @@ import java.util.List;
 public class UserService {
     private final UserDAOWrapper userDAOWrapper;
 
-    public List<UserDto> getUsers() {
+    private final UserSessionService userSessionService;
+
+    public List<UserDTO> getUsers() {
         return this.userDAOWrapper.getUsers();
     }
 
-    public UserDto getUserById(final Long id) {
+    public UserDTO getUserById(final Long id) {
         return this.userDAOWrapper.getUserById(id);
     }
 
-    public UserDto getUserByUsername(final String username) {
+    public UserDTO getUserByUsername(final String username) {
         return this.userDAOWrapper.getUserByUsername(username);
     }
 
-    public UserDto saveUser(final UserDto userDto) {
+    public UserDTO saveUser(final UserDTO userDto) {
         return this.userDAOWrapper.saveUser(userDto);
     }
 
-    public UserDto updateUser(final UserDto userDto) {
+    public UserDTO updateUser(final UserDTO userDto) {
         return this.userDAOWrapper.updateUser(userDto);
     }
 
     public void deleteUserById(final Long id) {
         this.userDAOWrapper.deleteUserById(id);
+    }
+
+    public void updateUserRole(final Long id, final Role role) {
+        userDAOWrapper.updateUserRole(id, role);
+        this.userSessionService.updateUserRole(id, role);
     }
 
 }

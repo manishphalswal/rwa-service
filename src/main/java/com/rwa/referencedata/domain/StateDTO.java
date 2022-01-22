@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @ToString
-public class StateDto {
+public class StateDTO {
     private Long id;
     private String stateName;
     private String country;

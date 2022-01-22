@@ -185,6 +185,7 @@
 	CREATE TABLE t_user ( 
 		id                   bigint  NOT NULL ,
 		username             varchar(50)  NOT NULL ,
+		user_password        varchar(200)  NOT NULL ,
 		first_name           varchar(100)  NOT NULL ,
 		last_name            varchar(100)   ,
 		dob                  date  NOT NULL ,
@@ -193,6 +194,7 @@
 		occupation           varchar(50)  NOT NULL ,
 		mobile_no            varchar(10)  NOT NULL ,
 		email_id             varchar(50)   ,
+		role				 varchar(10)	,
 		created_date         timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL ,
 		created_by           varchar(20)  NOT NULL ,
 		CONSTRAINT pk_t_user_id PRIMARY KEY ( id ),
@@ -203,12 +205,16 @@
 		id                   bigint  NOT NULL ,
 		username             varchar(50)  NOT NULL ,
 		user_password        varchar(200)  NOT NULL ,
+		role				 varchar(10)	,
 		logged_in            boolean  NOT NULL ,
+		active            	 boolean  NOT NULL DEFAULT true,
+		locked            	 boolean  NOT NULL DEFAULT false,
+		cred_expired         boolean  NOT NULL DEFAULT false,		
 		last_login           timestamp   ,
-		active               boolean  NOT NULL ,
 		login_time           timestamp   ,
 		created_date         timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL ,
-		CONSTRAINT pk_t_user_session_id PRIMARY KEY ( id )
+		CONSTRAINT pk_t_user_session_id PRIMARY KEY ( id ),
+		CONSTRAINT unq_t_user_session UNIQUE ( username )
 	 );
 
 	COMMENT ON TABLE t_user_session IS 'Primary key of the table';

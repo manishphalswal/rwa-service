@@ -9,7 +9,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @ToString
-public class AddressDto implements Serializable {
+public class AddressDTO implements Serializable {
 
     private Long id;
     private String address1;

@@ -7,8 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @ToString
-public class VillageDto {
+public class VillageDTO {
     private Long id;
     private String villageName;
-    private StateDto state;
+    private StateDTO state;
 }
