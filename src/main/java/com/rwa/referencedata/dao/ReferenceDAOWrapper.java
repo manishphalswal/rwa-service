@@ -1,6 +1,6 @@
 package com.rwa.referencedata.dao;
 
-import com.rwa.common.util.RWAModelMapper;
+import com.rwa.common.util.mapper.UserModelMapper;
 import com.rwa.referencedata.domain.StateDTO;
 import com.rwa.referencedata.domain.VillageDTO;
 import com.rwa.referencedata.exception.ResourceNotFoundException;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ReferenceDAOWrapper {
 
-    private final RWAModelMapper rwaModelMapper;
+    private final UserModelMapper userModelMapper;
 
     private final IVillageRepository villageRepository;
 
@@ -25,29 +25,29 @@ public class ReferenceDAOWrapper {
     public List<VillageDTO> getVillages() {
         return villageRepository.findAll()
                 .parallelStream()
-                .map(rwaModelMapper::mapVillageEntityToBean)
+                .map(userModelMapper::mapVillageEntityToBean)
                 .collect(Collectors.toList());
     }
 
     public List<VillageDTO> getVillagesByState(final Long stateId) {
         return villageRepository.findAllByStateId(stateId)
-                .stream().map(rwaModelMapper::mapVillageEntityToBean)
+                .stream().map(userModelMapper::mapVillageEntityToBean)
                 .collect(Collectors.toList());
     }
 
     public VillageDTO getVillageById(final Long id) {
-        return rwaModelMapper.mapVillageEntityToBean(villageRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
+        return userModelMapper.mapVillageEntityToBean(villageRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
     }
 
 
     public List<StateDTO> getStates() {
         return stateRepository.findAll()
                 .parallelStream()
-                .map(rwaModelMapper::mapStateEntityToBean)
+                .map(userModelMapper::mapStateEntityToBean)
                 .collect(Collectors.toList());
     }
 
     public StateDTO getStateById(final Long id) {
-        return rwaModelMapper.mapStateEntityToBean(stateRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
+        return userModelMapper.mapStateEntityToBean(stateRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
     }
 }

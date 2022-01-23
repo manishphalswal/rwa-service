@@ -1,4 +1,4 @@
-package com.rwa.common.util;
+package com.rwa.common.util.mapper;
 
 import com.rwa.common.domain.Role;
 import com.rwa.referencedata.domain.StateDTO;
@@ -9,17 +9,22 @@ import com.rwa.user.domain.UserDTO;
 import com.rwa.user.domain.UserSessionDTO;
 import com.rwa.user.entity.User;
 import com.rwa.user.entity.UserSession;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.sql.Timestamp;
+import java.util.Optional;
 
 @Component
-public class RWAModelMapper {
-    private final ModelMapper modelMapper = new ModelMapper();
+@AllArgsConstructor
+public class UserModelMapper {
+    private final ModelMapper modelMapper;
 
-    public RWAModelMapper() {
+    @PostConstruct
+    public void init() {
         modelMapper.addMappings(new PropertyMap<UserDTO, User>() {
             @Override
             protected void configure() {
@@ -64,10 +69,7 @@ public class RWAModelMapper {
     }
 
     public UserSessionDTO mapObjectArrayToUserSessionDTOBean(final Object[] dtoObjArr) {
-        int length = dtoObjArr.length;
-        UserSessionDTO userSessionDTO = null;
-        if (length >= 9) {
-            userSessionDTO = UserSessionDTO.builder()
+        return UserSessionDTO.builder()
                     .id((Long) dtoObjArr[0])
                     .username((String) dtoObjArr[1])
                     .userPassword((String) dtoObjArr[2])
@@ -76,17 +78,9 @@ public class RWAModelMapper {
                     .active((boolean) dtoObjArr[5])
                     .locked((boolean) dtoObjArr[6])
                     .credExpired((boolean) dtoObjArr[7])
+                    .loginTime(Optional.ofNullable(dtoObjArr[9]).map((obj) -> ((Timestamp) dtoObjArr[9]).toLocalDateTime()).orElseGet(() -> null))
+                    .lastLoginTime(Optional.ofNullable(dtoObjArr[10]).map((obj) -> ((Timestamp) dtoObjArr[10]).toLocalDateTime()).orElseGet(() -> null))
                     .build();
-        }
-        //Skipped index 8 as its created Datetime
-        if (length == 10) {
-            userSessionDTO.setLoginTime(((Timestamp) dtoObjArr[9]).toLocalDateTime());
-        }
-        if (length == 11) {
-            userSessionDTO.setLastLoginTime(((Timestamp) dtoObjArr[10]).toLocalDateTime());
-        }
-
-        return userSessionDTO;
     }
 
 }

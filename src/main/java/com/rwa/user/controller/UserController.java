@@ -43,14 +43,16 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDto) {
-        String username = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        String owner = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        userDto.setUsername(userDto.getMobileNo());
         userDto.setUserPassword(passwordEncoder.encode(new String(Base64.getDecoder().decode(userDto.getUserPassword()))));
-        return ResponseEntity.ok(this.userService.saveUser(userDto, username));
+        return ResponseEntity.ok(this.userService.saveUser(userDto, owner));
     }
 
     @PostMapping("/register")
     public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO userDto) {
         userDto.setUserPassword(passwordEncoder.encode(new String(Base64.getDecoder().decode(userDto.getUserPassword()))));
+        userDto.setUsername(userDto.getMobileNo());
         return ResponseEntity.ok(this.userService.saveUser(userDto, "SYSTEM"));
     }
 

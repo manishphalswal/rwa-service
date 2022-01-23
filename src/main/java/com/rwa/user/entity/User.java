@@ -42,7 +42,7 @@ public class User implements Serializable {
 
     private String mobileNo;
     private String emailId;
-    @Column(name = "role", columnDefinition = "varchar(10) default 'BASIC'")
+    @Column(name = "role", insertable = false)
     private String role;
 
     @Column(name="created_date", insertable = false, updatable = false)

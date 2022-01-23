@@ -1,7 +1,7 @@
 package com.rwa.user.dao;
 
 import com.rwa.common.domain.Role;
-import com.rwa.common.util.RWAModelMapper;
+import com.rwa.common.util.mapper.UserModelMapper;
 import com.rwa.exception.InvalidRequestException;
 import com.rwa.user.domain.UserDTO;
 import com.rwa.user.entity.User;
@@ -23,28 +23,28 @@ public class UserDAOWrapper {
 
     private final IUserRepository userRepository;
     
-    private final RWAModelMapper rwaModelMapper;
+    private final UserModelMapper userModelMapper;
 
     public List<UserDTO> getUsers() {
         return this.userRepository.findAll()
                 .parallelStream()
-                .map(rwaModelMapper::mapUserEntityToBean)
+                .map(userModelMapper::mapUserEntityToBean)
                 .collect(Collectors.toList());
     }
 
     public UserDTO getUserById(final Long id) {
-        return rwaModelMapper.mapUserEntityToBean(this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id.toString())));
+        return userModelMapper.mapUserEntityToBean(this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id.toString())));
     }
 
     public UserDTO getUserByUsername(final String username) {
-        return rwaModelMapper.mapUserEntityToBean(this.userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username)));
+        return userModelMapper.mapUserEntityToBean(this.userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username)));
     }
 
     public UserDTO saveUser(final UserDTO userDto, final String createdBy) {
-        User user = rwaModelMapper.mapUserBeanToEntity(userDto);
+        User user = userModelMapper.mapUserBeanToEntity(userDto);
         user.setCreatedBy(createdBy);
         user.getAddress().setCreatedBy(createdBy);
-        return rwaModelMapper.mapUserEntityToBean(this.userRepository.save(user));
+        return userModelMapper.mapUserEntityToBean(this.userRepository.save(user));
     }
 
     public UserDTO updateUser(final UserDTO userDto) {
@@ -56,10 +56,16 @@ public class UserDAOWrapper {
         if (userDto.getUsername() != null && !user.getUsername().equals(userDto.getUsername())) {
             throw new IdUsernameMismatchException();
         }
-        userDto.setUsername(user.getUsername()); // To override if null in request
-        rwaModelMapper.mapUserBeanToEntity(userDto, user);
+        /*
+         * To Override the user input values
+         */
+        userDto.setUsername(user.getUsername());
+        userDto.setUserPassword(user.getUserPassword());
+        userDto.setRole(Role.valueOf(user.getRole()));
 
-        return rwaModelMapper.mapUserEntityToBean(this.userRepository.save(user));
+        userModelMapper.mapUserBeanToEntity(userDto, user);
+
+        return userModelMapper.mapUserEntityToBean(this.userRepository.save(user));
     }
 
     public void deleteUserById(final Long id) {
