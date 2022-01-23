@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -25,6 +25,6 @@ public class UserSessionDTO {
     private boolean locked;
     private boolean credExpired;
 
-    private OffsetDateTime lastLogin;
-    private OffsetDateTime loginTime;
+    private LocalDateTime lastLoginTime;
+    private LocalDateTime  loginTime;
 }

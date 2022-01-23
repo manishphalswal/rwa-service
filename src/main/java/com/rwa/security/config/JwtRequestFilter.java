@@ -1,10 +1,11 @@
 package com.rwa.security.config;
 
-import com.rwa.security.util.JwtTokenUtil;
 import com.rwa.security.service.JwtUserDetailsService;
+import com.rwa.security.util.JwtTokenUtil;
+import com.rwa.user.service.UserSessionService;
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,12 +21,13 @@ import java.io.IOException;
 
 @Component
 @Slf4j
+@AllArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-	@Autowired
-	private JwtUserDetailsService jwtUserDetailsService;
+	private final JwtUserDetailsService jwtUserDetailsService;
 
-	@Autowired
+	private final UserSessionService userSessionService;
+
 	private JwtTokenUtil jwtTokenUtil;
 
 	@Override
@@ -56,7 +58,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
 
 			// if token is valid configure Spring Security to manually set authentication
-			if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+			if (jwtTokenUtil.validateToken(jwtToken, userDetails) && userSessionService.isLoggedIn(username)) {
 
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());

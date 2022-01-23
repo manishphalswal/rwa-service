@@ -1,5 +1,6 @@
 package com.rwa.common.util;
 
+import com.rwa.common.domain.Role;
 import com.rwa.referencedata.domain.StateDTO;
 import com.rwa.referencedata.domain.VillageDTO;
 import com.rwa.referencedata.entity.State;
@@ -11,6 +12,8 @@ import com.rwa.user.entity.UserSession;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
+
+import java.sql.Timestamp;
 
 @Component
 public class RWAModelMapper {
@@ -58,6 +61,32 @@ public class RWAModelMapper {
 
     public UserSessionDTO mapUserSessionEntityToBean(final UserSession userSession) {
         return modelMapper.map(userSession, UserSessionDTO.class);
+    }
+
+    public UserSessionDTO mapObjectArrayToUserSessionDTOBean(final Object[] dtoObjArr) {
+        int length = dtoObjArr.length;
+        UserSessionDTO userSessionDTO = null;
+        if (length >= 9) {
+            userSessionDTO = UserSessionDTO.builder()
+                    .id((Long) dtoObjArr[0])
+                    .username((String) dtoObjArr[1])
+                    .userPassword((String) dtoObjArr[2])
+                    .role(Role.valueOf((String) dtoObjArr[3]))
+                    .loggedIn((boolean) dtoObjArr[4])
+                    .active((boolean) dtoObjArr[5])
+                    .locked((boolean) dtoObjArr[6])
+                    .credExpired((boolean) dtoObjArr[7])
+                    .build();
+        }
+        //Skipped index 8 as its created Datetime
+        if (length == 10) {
+            userSessionDTO.setLoginTime(((Timestamp) dtoObjArr[9]).toLocalDateTime());
+        }
+        if (length == 11) {
+            userSessionDTO.setLastLoginTime(((Timestamp) dtoObjArr[10]).toLocalDateTime());
+        }
+
+        return userSessionDTO;
     }
 
 }

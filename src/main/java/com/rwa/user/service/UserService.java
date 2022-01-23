@@ -29,8 +29,8 @@ public class UserService {
         return this.userDAOWrapper.getUserByUsername(username);
     }
 
-    public UserDTO saveUser(final UserDTO userDto) {
-        return this.userDAOWrapper.saveUser(userDto);
+    public UserDTO saveUser(final UserDTO userDto, final String createdBy) {
+        return this.userDAOWrapper.saveUser(userDto, createdBy);
     }
 
     public UserDTO updateUser(final UserDTO userDto) {
@@ -43,7 +43,6 @@ public class UserService {
 
     public void updateUserRole(final Long id, final Role role) {
         userDAOWrapper.updateUserRole(id, role);
-        this.userSessionService.updateUserRole(id, role);
     }
 
 }

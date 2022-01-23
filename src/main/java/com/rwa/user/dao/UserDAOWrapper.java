@@ -11,7 +11,6 @@ import com.rwa.user.repository.IUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,8 +40,11 @@ public class UserDAOWrapper {
         return rwaModelMapper.mapUserEntityToBean(this.userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username)));
     }
 
-    public UserDTO saveUser(final UserDTO userDto) {
-        return rwaModelMapper.mapUserEntityToBean(this.userRepository.save(convertBeanToEntity(userDto)));
+    public UserDTO saveUser(final UserDTO userDto, final String createdBy) {
+        User user = rwaModelMapper.mapUserBeanToEntity(userDto);
+        user.setCreatedBy(createdBy);
+        user.getAddress().setCreatedBy(createdBy);
+        return rwaModelMapper.mapUserEntityToBean(this.userRepository.save(user));
     }
 
     public UserDTO updateUser(final UserDTO userDto) {
@@ -67,19 +69,6 @@ public class UserDAOWrapper {
             ex.printStackTrace();
             throw new UserNotFoundException(id.toString());
         }
-    }
-
-    private User convertBeanToEntity(final UserDTO userDto) {
-        log.info("Received Document with Details: " + userDto);
-
-        User user = rwaModelMapper.mapUserBeanToEntity(userDto);
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        user.setCreatedBy(username);
-        user.getAddress().setCreatedBy(username);
-
-        log.info("Saving Document with Details: " + user);
-        return user;
     }
 
     public void updateUserRole(final Long id, final Role role) {

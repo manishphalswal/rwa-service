@@ -204,8 +204,6 @@
 	CREATE TABLE t_user_session ( 
 		id                   bigint  NOT NULL ,
 		username             varchar(50)  NOT NULL ,
-		user_password        varchar(200)  NOT NULL ,
-		role				 varchar(10)	,
 		logged_in            boolean  NOT NULL ,
 		active            	 boolean  NOT NULL DEFAULT true,
 		locked            	 boolean  NOT NULL DEFAULT false,

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,14 +43,15 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDto) {
+        String username = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         userDto.setUserPassword(passwordEncoder.encode(new String(Base64.getDecoder().decode(userDto.getUserPassword()))));
-        return ResponseEntity.ok(this.userService.saveUser(userDto));
+        return ResponseEntity.ok(this.userService.saveUser(userDto, username));
     }
 
     @PostMapping("/register")
     public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO userDto) {
         userDto.setUserPassword(passwordEncoder.encode(new String(Base64.getDecoder().decode(userDto.getUserPassword()))));
-        return ResponseEntity.ok(this.userService.saveUser(userDto));
+        return ResponseEntity.ok(this.userService.saveUser(userDto, "SYSTEM"));
     }
 
     @PutMapping

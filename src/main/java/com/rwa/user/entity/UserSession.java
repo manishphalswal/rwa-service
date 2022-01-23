@@ -24,13 +24,13 @@ public class UserSession implements Serializable {
     private Long id;
 
     private String username;
-    private String userPassword;
-
-    private String role;
 
     private boolean loggedIn;
+    @Column(name = "active", insertable = false)
     private boolean active;
+    @Column(name = "locked", insertable = false)
     private boolean locked;
+    @Column(name = "cred_expired", insertable = false)
     private boolean credExpired;
 
     private Timestamp lastLogin;

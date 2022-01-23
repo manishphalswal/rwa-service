@@ -21,10 +21,11 @@ public class ApplicationExceptionHandler {
         ex.printStackTrace();
     }
 
-    @ResponseStatus(value= HttpStatus.CONFLICT,
-            reason="User already exists with given username")
+    @ResponseStatus(value= HttpStatus.INTERNAL_SERVER_ERROR,
+            reason="Server failed to process request")
     @ExceptionHandler(DataIntegrityViolationException.class)
     public void handleException(DataIntegrityViolationException ex) {
+        ex.printStackTrace();
     }
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND,

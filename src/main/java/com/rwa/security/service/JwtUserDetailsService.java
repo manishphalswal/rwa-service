@@ -32,7 +32,7 @@ public class JwtUserDetailsService implements UserDetailsService {
                             User.builder()
                                     .username(userSessionDTO.getUsername())
                                     .password(userSessionDTO.getUserPassword())
-                                    .accountExpired(userSessionDTO.isActive())
+                                    .disabled(!userSessionDTO.isActive())
                                     .accountLocked(userSessionDTO.isLocked())
                                     .credentialsExpired(userSessionDTO.isCredExpired())
                                     .roles(Optional.ofNullable(userSessionDTO.getRole()).orElse(Role.BASIC).name())
