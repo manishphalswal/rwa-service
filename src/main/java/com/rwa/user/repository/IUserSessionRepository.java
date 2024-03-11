@@ -12,11 +12,7 @@ public interface IUserSessionRepository extends JpaRepository<UserSession, Long>
             "from com.rwa.user.entity.UserSession us inner join com.rwa.user.entity.User u on us.username=u.username where us.username= :username")
     Object[] findByUsername(@Param("username") String username);
 
-//    @Modifying
-//    @Query("update UserSession us set us.loggedIn = true, us.lastLogin = :lastLogin, us.loginTime = :loginTime where us.username = :username")
-//    int updateLoginStatus(@Param("username") String username, @Param("lastLogin") Timestamp lastLogin, @Param("loginTime") Timestamp loginTime);
-
     @Modifying
-    @Query("update UserSession us set us.loggedIn = false where us.username = :username")
-    int updateLogoutStatus(@Param("username") String username);
+    @Query("update UserSession us set us.token = null where us.username = :username")
+    int updateLogoutDetails(@Param("username") String username);
 }

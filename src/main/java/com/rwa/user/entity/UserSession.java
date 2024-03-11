@@ -25,7 +25,7 @@ public class UserSession implements Serializable {
 
     private String username;
 
-    private boolean loggedIn;
+    private String token;
     @Column(name = "active", insertable = false)
     private boolean active;
     @Column(name = "locked", insertable = false)

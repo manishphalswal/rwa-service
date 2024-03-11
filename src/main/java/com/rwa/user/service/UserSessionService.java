@@ -24,15 +24,15 @@ public class UserSessionService {
         return daoWrapper.updateUserSession(userSessionDTO);
     }
 
-    public void updateLoginStatus(final String username) {
-        daoWrapper.updateLoginStatus(username);
+    public void updateLoginDetails(final String username, final String token) {
+        daoWrapper.updateLoginDetails(username, token);
     }
 
-    public void updateLogoutStatus(final String username) {
-        daoWrapper.updateLogoutStatus(username);
+    public void updateLogoutDetails(final String username) {
+        daoWrapper.updateLogoutDetails(username);
     }
 
-    public boolean isLoggedIn(final String username) {
-        return daoWrapper.isLoggedIn(username);
+    public boolean validateTokenFromDB(final String username, final String token) {
+        return daoWrapper.validateTokenFromDB(username, token);
     }
 }

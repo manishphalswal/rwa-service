@@ -74,7 +74,7 @@ public class UserModelMapper {
                     .username((String) dtoObjArr[1])
                     .userPassword((String) dtoObjArr[2])
                     .role(Role.valueOf((String) dtoObjArr[3]))
-                    .loggedIn((boolean) dtoObjArr[4])
+                    .token((String) dtoObjArr[4])
                     .active((boolean) dtoObjArr[5])
                     .locked((boolean) dtoObjArr[6])
                     .credExpired((boolean) dtoObjArr[7])

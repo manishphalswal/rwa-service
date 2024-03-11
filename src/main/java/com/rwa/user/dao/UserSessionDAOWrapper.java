@@ -34,20 +34,20 @@ public class UserSessionDAOWrapper {
         return userModelMapper.mapUserSessionEntityToBean(repository.save(userModelMapper.mapUserSessionBeanToEntity(userSessionDTO)));
     }
 
-    public void updateLoginStatus(final String username) {
+    public void updateLoginDetails(final String username, final String token) {
         UserSessionDTO userSessionDTOFromDB = getUserSession(username);
         UserSession userSessionFromDB = userModelMapper.mapUserSessionBeanToEntity(userSessionDTOFromDB);
-        userSessionFromDB.setLoggedIn(true);
+        userSessionFromDB.setToken(token);
         userSessionFromDB.setLoginTime(Timestamp.valueOf(LocalDateTime.now()));
         userSessionFromDB.setLastLogin(userSessionFromDB.getLoginTime());
         repository.save(userSessionFromDB);
     }
 
-    public void updateLogoutStatus(final String username) {
-        repository.updateLogoutStatus(username);
+    public void updateLogoutDetails(final String username) {
+        repository.updateLogoutDetails(username);
     }
 
-    public boolean isLoggedIn(final String username) {
-        return getUserSession(username).isLoggedIn();
+    public boolean validateTokenFromDB(final String username, final String token) {
+        return token.equals(getUserSession(username).getToken());
     }
 }

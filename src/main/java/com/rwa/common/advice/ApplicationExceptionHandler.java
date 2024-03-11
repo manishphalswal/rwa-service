@@ -4,8 +4,11 @@ import com.rwa.exception.InvalidRequestException;
 import com.rwa.referencedata.exception.ResourceNotFoundException;
 import com.rwa.user.exception.IdUsernameMismatchException;
 import com.rwa.user.exception.UserNotFoundException;
+import com.rwa.user.exception.UsernameAssignedException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -58,4 +61,24 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
     public void handleException(HttpClientErrorException.Unauthorized ex) {
     }
+
+    @ResponseStatus(value= HttpStatus.FORBIDDEN,
+            reason="Invalid Credentials")
+    @ExceptionHandler(BadCredentialsException.class)
+    public void handleException(BadCredentialsException ex) {
+        ex.printStackTrace();
+    }
+
+    @ResponseStatus(value= HttpStatus.METHOD_NOT_ALLOWED,
+            reason="Method not supported")
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public void handleException(HttpRequestMethodNotSupportedException ex) {
+    }
+
+    @ResponseStatus(value= HttpStatus.CONFLICT,
+            reason="Mobile No already linked to another user. Try with different one.")
+    @ExceptionHandler(UsernameAssignedException.class)
+    public void handleException(UsernameAssignedException ex) {
+    }
+
 }

@@ -1,10 +1,14 @@
 	DROP SEQUENCE IF EXISTS t_user_address_seq;
 	DROP SEQUENCE IF EXISTS t_user_seq;
 	DROP SEQUENCE IF EXISTS t_user_session_seq;
+	DROP SEQUENCE IF EXISTS t_permission_seq;
+	DROP SEQUENCE IF EXISTS t_role_seq;
 	
 	DROP TABLE IF EXISTS t_user_address CASCADE ;
 	DROP TABLE IF EXISTS t_user CASCADE ;
 	DROP TABLE IF EXISTS t_user_session CASCADE ;
+	DROP TABLE IF EXISTS t_permission CASCADE ;
+	DROP TABLE IF EXISTS t_role CASCADE ;
 	
 	DROP TABLE IF EXISTS m_state CASCADE ;
 	DROP TABLE IF EXISTS m_village CASCADE ;
@@ -23,6 +27,14 @@
 	CREATE SEQUENCE t_user_session_seq INCREMENT BY 1 MINVALUE 1;
 
 	COMMENT ON SEQUENCE t_user_session_seq IS 'Sequence to generate primary keys for t_user_session table';
+	
+	CREATE SEQUENCE t_permission_seq INCREMENT BY 1 MINVALUE 1;
+
+	COMMENT ON SEQUENCE t_permission_seq IS 'Sequence for generating primary key values for table t_permission';
+	
+	CREATE SEQUENCE t_role_seq INCREMENT BY 1 MINVALUE 1;
+
+	COMMENT ON SEQUENCE t_role_seq IS 'Sequence to generate primary key values for table t_role';
 	
 	-------------------------MASTER TABLE CREATION---------------------------
 
@@ -90,7 +102,7 @@
 	CREATE TABLE t_user_session ( 
 		id                   bigint  NOT NULL ,
 		username             varchar(10)  NOT NULL ,
-		logged_in            boolean  NOT NULL ,
+		token                varchar(200)   ,
 		active            	 boolean  NOT NULL DEFAULT true,
 		locked            	 boolean  NOT NULL DEFAULT false,
 		cred_expired         boolean  NOT NULL DEFAULT false,		
@@ -102,6 +114,36 @@
 	 );
 
 	COMMENT ON TABLE t_user_session IS 'Primary key of the table';
+	
+	COMMENT ON COLUMN t_user_session.token IS 'Used to store json token generated for logged in user';
+	
+	CREATE  TABLE t_permission ( 
+		id                   bigint  NOT NULL ,
+		name                 varchar(20)  NOT NULL ,
+		created_date         timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL ,
+		created_by           varchar(20)  NOT NULL ,
+		CONSTRAINT pk_t_permission_id PRIMARY KEY ( id )
+	);
+
+	COMMENT ON COLUMN t_permission.id IS 'Primary key of the table';
+
+	COMMENT ON COLUMN t_permission.name IS 'Permission Name';
+	
+	CREATE  TABLE t_role ( 
+		id                   bigint  NOT NULL ,
+		name                 varchar(10)  NOT NULL ,
+		permissions          bigint[]   ,
+		created_date         timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL ,
+		created_by           varchar(20)  NOT NULL ,
+		CONSTRAINT pk_t_role_id PRIMARY KEY ( id )
+	 );
+
+	COMMENT ON COLUMN t_role.id IS 'Primary Key of the table';
+
+	COMMENT ON COLUMN t_role.name IS 'Role name';
+
+	COMMENT ON COLUMN t_role.permissions IS 'List of Permissions attached to the role';
+
 	
 	-------------------------INDEX AND CONSTRAINT CREATION---------------------------
 

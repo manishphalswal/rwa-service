@@ -7,17 +7,21 @@ import com.rwa.user.domain.UserDTO;
 import com.rwa.user.entity.User;
 import com.rwa.user.exception.IdUsernameMismatchException;
 import com.rwa.user.exception.UserNotFoundException;
+import com.rwa.user.exception.UsernameAssignedException;
 import com.rwa.user.repository.IUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Transactional
 @Slf4j
 public class UserDAOWrapper {
 
@@ -40,7 +44,7 @@ public class UserDAOWrapper {
         return userModelMapper.mapUserEntityToBean(this.userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username)));
     }
 
-    public UserDTO saveUser(final UserDTO userDto, final String createdBy) {
+    public UserDTO saveUser(final UserDTO userDto, final String createdBy) throws UsernameAssignedException, DataIntegrityViolationException {
         User user = userModelMapper.mapUserBeanToEntity(userDto);
         user.setCreatedBy(createdBy);
         user.getAddress().setCreatedBy(createdBy);
@@ -82,6 +86,10 @@ public class UserDAOWrapper {
         if (count <= 0) {
             throw new UserNotFoundException(id.toString());
         }
+    }
+
+    public boolean updatePassword(final String username, final String newPassword) {
+        return userRepository.updatePassword(username, newPassword) > 0;
     }
 
 }

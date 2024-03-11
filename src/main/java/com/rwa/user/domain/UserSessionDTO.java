@@ -20,7 +20,7 @@ public class UserSessionDTO {
 
     private Role role;
 
-    private boolean loggedIn;
+    private String token;
     private boolean active;
     private boolean locked;
     private boolean credExpired;

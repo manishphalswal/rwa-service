@@ -12,5 +12,6 @@ public enum Permission {
     SURVEY_W,
     SURVEY_R,
     FINANCE_W,
-    FINANCE_R
+    FINANCE_R,
+    RESET_PASSWORD;
 }
